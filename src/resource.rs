@@ -7,40 +7,40 @@ use crate::ResponseResult;
 
 #[derive(Serialize, Deserialize)]
 #[serde(crate = "rocket::serde", rename_all = "SCREAMING_SNAKE_CASE")]
-pub enum NomRessource {
-    Bois,
-    Pierre,
-    Fer,
-    Charbon,
-    Nourriture,
-    Energie,
+pub enum ResourceName {
+    Wood,
+    Stone,
+    Iron,
+    Coal,
+    Food,
+    Energy,
     Point,
     Pollution,
 }
 
 #[derive(Serialize)]
 #[serde(crate = "rocket::serde", rename_all = "SCREAMING_SNAKE_CASE")]
-pub enum TypeRessource {
-    Recoltable,
-    Produite,
+pub enum ResourceType {
+    Harvestable,
+    Produced,
 }
 
 #[derive(Serialize)]
 #[serde(crate = "rocket::serde")]
-pub struct Ressource {
-    #[serde(rename = "idRessource")]
-    id: String,
+pub struct Resource {
+    name: ResourceName,
+    r#type: ResourceType,
     description: String,
-    nom: NomRessource,
-    r#type: TypeRessource,
 }
 
 #[derive(Serialize)]
 #[serde(crate = "rocket::serde")]
-pub struct Ressources {
-    ressource: NomRessource,
-    quantite: i64,
+pub struct Resources {
+    resource: ResourceName,
+    quantity: i64,
 }
 
 #[get("/")]
-pub fn ressources() -> ResponseResult<Vec<Ressource>> {}
+pub fn resources() -> ResponseResult<Vec<Resource>> {
+    ResponseResult::NoContent(())
+}

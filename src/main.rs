@@ -3,11 +3,11 @@ use rocket::{
     serde::{Serialize, json::Json},
 };
 
-mod batiments;
-mod equipes;
-mod monde;
-mod ressources;
-mod villageois;
+mod building;
+mod map;
+mod resource;
+mod team;
+mod villager;
 
 #[derive(Serialize)]
 #[serde(crate = "rocket::serde")]
@@ -21,6 +21,8 @@ struct ErrorResponse {
 enum ResponseResult<T> {
     #[response(status = 200)]
     Ok(Json<T>),
+    #[response(status = 204)]
+    NoContent(()),
     #[response(status = 400)]
     BadRequest(Json<ErrorResponse>),
     #[response(status = 401)]
@@ -35,23 +37,23 @@ enum ResponseResult<T> {
 fn rocket() -> _ {
     rocket::build()
         .mount(
-            "/equipes",
+            "/team",
             routes![
-                equipes::equipes,
-                equipes::equipes_id,
-                villageois::villageois,
-                villageois::villageois_id,
-                villageois::villageois_action,
+                team::teams,
+                team::team,
+                villager::villagers,
+                villager::villager,
+                villager::villager_action,
             ],
         )
-        .mount("/monde", routes![monde::map])
-        .mount("/ressources", routes![ressources::ressources])
+        .mount("/map", routes![map::map])
+        .mount("/resource", routes![resource::resources])
         .mount(
-            "/batiments",
+            "/building",
             routes![
-                batiments::batiments,
-                batiments::batiments_id,
-                batiments::batiments_disponible
+                building::buildings,
+                building::building,
+                building::available_buildings,
             ],
         )
 }
